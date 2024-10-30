@@ -1,12 +1,14 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>
-           Matt's Blog
-        </title>
-    </head>
-    <body>
-        <h1>Hello World</h1>
-    </body>
+{% extends 'blog/base.html' %}
+{% block content %}
 
-</html>
+    hello world
+    {% comment %} {% for post in posts %}
+        <article class="post">
+            <time class="date">
+                {{ post.published_date }}
+            </time>
+            <h2><a href="{% url 'post_detail' post.pk%}">{{ post.title }}</a></h2>
+            <p>{{ post.text|linebreaksbr }}</p>
+        </article>
+    {% endfor %} {% endcomment %}
+{% endblock %}

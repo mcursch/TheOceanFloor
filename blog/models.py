@@ -8,7 +8,7 @@ class Post(models.Model):
     # on_delete allows us to cascade delete this field when authors is deleted (?)       
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
-    text = models.TextField
+    text = models.TextField(default='hello world')
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
     
