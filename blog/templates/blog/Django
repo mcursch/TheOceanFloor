@@ -1,0 +1,261 @@
+Django 
+
+How the internet works
+	- HTML code, which makes up a website, is stored on a server. This server is a specialized, powerful computer whos only purpose is to store and server data (hence the name)
+	- The internet is a collected web of multiple servers
+	- when we want to reach something stored on a server (like a webpage), we must first connect to that webpage through a variety of different nodes in the network
+		- computer translates site name into an IP Address via DNS (Domain Name System)
+		- requests are sent back and forth via HTTP (hypertext transfer protocol)
+
+How Django Works
+	- takes request, passes to urlresolver
+	- urlresolver looks for proper symbols (makes sure request is going to right place)
+		- if it finds a match, passes it to associated function, called a view
+		- done via URLConf
+	- view function looks at what needs to be done, does it if able, and returns a response on completion
+		- ex: changing the description of a job
+
+Virtual Environment
+	- Django works best on a virtual environment, and should be installed there
+	- the virtual environment (virtualenv) will allow us to keep things that should be independant (like package version, python versions, etc) in their own isolated boxes
+	- there are different ways to use a different environment
+		- Using pip, we can install pipenv, which will allow us to start a virtual env
+		- On Mac, we have the built in virtual environment package virtualenv (venv for short)
+	- Creating a Virtual Env
+		- python3 -m venv [env_name]
+	- Starting a Virtual Env
+		- source [env_name]/bin/activate (if one directory above)
+	- Installing Django on the virtual env
+		- pip install django
+
+Django-Admin
+	- when in the venv shell, we can utilize django-admin shell commands to init our project
+	- you can also route to /admin to login to and view administration info on django project
+	- will allow you to create users, delete users, etc
+	- Commands (prefaced with django-admin)
+		- startproject [project_name]
+			- starts a project with the given
+
+
+
+Manage.py
+	- manage.py allows us to run commands like launching server once we have django project created
+	- runserver
+		- python manage.py runserver
+		- starts the application server
+	- migrate [optional_model_name]
+		- syncs info (apps, models, etc) in settings with django project
+		- if given, will only (?) apply to given model name
+	- makemigrations [optional_model_name]
+		- if custom apps have been added, this will create the migration script for them 
+		- migrate is usually ran after this
+		- if given, will only (?) apply to given model name
+	- createsuperuser
+		- creates a superuser for the project
+	- startapp [app_name]
+		- creates an app for the given app_name, including migrations and stuff
+	- shell
+		- opens up pseudo python interpreter shell
+	- createstatic
+		- generates static files on hosting server if needed
+
+
+Django Apps
+	- miniature pieces of functional code that are added to our django project
+	- comes with some builts ins: admin, auth, sessions
+	- each app should do one thing really well. We shouldnt have apps that try and cross over
+		- keep them narrow in focus
+	- Models
+		- found in the models.py folder 
+		- allows you to specify the attributes of your app
+		- a model will usually inherit from the default models class (models.Model)
+		- will usually map to a db field (ex: description = models.TextField() for a text field)
+
+		- Model Fields
+			- many different types
+			- found here: https://docs.djangoproject.com/en/5.1/ref/models/fields/
+		- Changing Models
+			- need to provide default or null values when adding fields
+				- null=True will allow the field to be null
+				- default=[value] will default the fields to that value
+				- blank=True means the field is optional or required
+		- models need to registered in their apps admin.py file after creation
+	- Views
+		- views define how your app will route requests
+
+	- Migrations
+		- scripts that setup structure of model in the DB
+		- when adding fields to a model, you must specify either null or default value because the migration needs to know what to apply to the other values
+
+	- apps need to be added to INSTALLED_APPS in settings.py
+	- registering these in admin.py will allow them to show up in the admin UI and be created from there
+	- can also be created in shell (using shell command)
+		- ex:
+			from products.models import Product
+			Product.objects.create(title='title test', description='random description')
+
+Django Architecture
+	- Settings.py
+		- INSTALLED_APPS
+			- modules and things you bring in to the project go in here. very important
+		- Middleware
+			- request handling
+		- ROOT_URLCONF
+			- describes how urls will be routed
+		- TEMPLATES
+			- information about html template rendering
+		- WSGI_APPLICATION
+			- info about how server works
+		- DATABASES
+			- info on DB connections ( comes with sqllite by default )
+		- AUTH_PASSWORD_VALIDATORS
+			- helps validate passwords are strong
+		- STATIC_IRL
+			- where are static files (css, js, html) stored
+
+Django Templating
+	- Djangos version of rendering HTML on a page
+	- templates can be passed into a view to render them (using return render())
+	- templates folder to contain all templates cna be made in src root
+	- settings.py must have templates DIRS line added
+
+Making a Page in Django
+	- create app
+	- setup routing structure/return structure in view
+	- import the view into your root urls file
+
+
+Static Files in Django
+	- static files (css, js, etc) go in static subdirectory of individual app (needs to be created)
+	- when changed, these files also need to be updated on the server if being hosted
+		- python manage.py collectstatic
+
+pipenv venv to get address of virtual server, the python interpreter for this project needs to be at that addr plus '/bin/python'
+
+settings.py contains info regarding python config for the project
+
+installed apps contains applications installed to assist with the project, such as sessions, auth, admin, etc
+
+
+each app has migrations, admin module, apps module, models module, tests module, views module
+
+django views are different from frontend views
+	 views are more like request handlers (some called actions)
+	 it takes a request, and returns a response
+
+each app needs to be registered in settings.py
+
+map urls to view functions in urls.py (custom, BP name)
+
+each app can have its own url to view mappings, but they need to be imported into the main apps urls.py
+
+templates return html content to client
+templates not used that much, because Django is mainly used to return data, not html
+
+
+Steps to creating an API (from scratch)
+	- start virtualenv
+	- install django
+	- run startproject command
+	- run runserver command
+	- create superuser
+	- run migrations
+	- if creating a new app, run startapp command
+	- create models.py and define model structure in there
+	- add app name to settings.py installed apps
+	- run makemigrations to setup new model setup
+	- run migrate
+	- if you want to be able to edit this from admin panel, make an admin.py in the app
+		- register the model to admin.site
+	- add desired paths and responses to seperate app urls.py
+		- after this, add a include to those paths in root app urls.py
+		- path goes: django gets request, tries to match pattern in root, finds our app as match
+			- request gets sent to app which does the same, matches the pattern to whatever url it needs
+			- view function accepts request, does work, returns response, response gets rendered
+	- configure the views so that the built paths have views 
+
+
+
+
+
+
+
+API Creation (full CRUD):
+	- create directory
+	- cd in and create virtual env
+		- python3 -m venv .venv
+	- activate the virtual env
+		- . .venv/bin/activate
+	- install django
+		- pip install django
+	- start project with django-admin
+		- django-admin startproject [projectname] .
+	- make app 
+		- django-admin startapp [appname]
+	- connect routing from root to created app
+		- path('', include('[appname].urls'))
+	- now requests will go to our app
+	- set up app to receive request (in app urls.py)
+		-from django.urls import path
+		-from . import views
+		- create urlpatterns list
+			-urlpatterns = ['', views.[view_name], name="[view_name]"]
+	- now request goes from root to our app to our view function, so we have to make the view function (views.py)
+	- before we make view function, we should make a model that we will use to return in the view
+	- in app models.py, define class and attributes
+		- from django.db import models
+		- class [model_name](models.Model)
+			- [field] = models.[fieldType](Restrictions)
+	- When the model is complete, register it in the admin.py
+		- from .models import [Model_name]
+		- admin.site.register([Model_name])
+	
+	- Now, create our view
+		- def [view_name](request):
+			- do stuff (ex: get all models)
+			- foods = Food.objects.all()
+			- return render(request, '[template_name].html', { 'foods' : foods})
+	- Now, request goes from root urls to app urls to app view to app template with data
+	- create templates directory, put template_name.html inside it style however
+	- now we have everything setup, but we need to create some objects
+	- create a superuser
+		- python manage.py createsuperuser 
+		- enter info
+	- go to page, go to admin and login
+	- add however many objects you like
+	- return to page, and if template is setup right they should be rendered
+
+
+	- now we want to add crud functionality
+	-first, create forms.py to establish struture of forms
+		- from django import forms
+		- from .models import Food
+		class FoodForm(forms.ModelForm)
+			class Meta:
+				model = Food
+				fields = ('name', 'description')
+
+	- now, setup a view function to send request to postForm
+		- from .forms import PostForm
+		def post_new(request):
+			form = PostForm()
+			return render(request, 'food_edit.html', { 'form': form})
+
+	- now connect to this function via requests with urls
+	- path('new/', views.food_new, name="post_new")
+	- dont forget the template
+		- form method=POST
+			- {{ form.as_p}}
+			- btn type = submit
+
+	- same process for views with edit, but we have to use pk (private key)
+		- url : path('<int:pk>/edit/', views.food_edit, name="food_edit")
+		- in view: post = get_object_or_404(Food, pk=pk)
+
+
+
+
+
+
+
+
