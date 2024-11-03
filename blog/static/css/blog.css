@@ -7,8 +7,9 @@ a {
 .page-header {
     height: 60px;
     width: 100%;
-    background-color: red;
+    background-color: black;
     display:flex;
+    align-items: end;
     justify-content: space-between;
 }
 .page-header-title {
@@ -23,14 +24,11 @@ a {
 
 .page-header-new-button {
     display: flex;
-    align-items: end;
+    align-items: center;
     margin-right: 100px;
-    padding-left: 10px;
-    padding-right: 10px;
-    margin-top:10px;
     background-color: white;
     height: 60%;
-    margin-bottom: 10px;
+    padding: 10px;
     border-radius: 15px;
 
 }
@@ -46,7 +44,7 @@ html {
 }
 
 .blog-container {
-    background-color: purple;
+    background-color: black;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -58,7 +56,10 @@ html {
 }
 
 .blog-list {
-    background-color: yellow;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     height: 100%;
     width: 100%;
 }
@@ -102,7 +103,7 @@ html {
 }
 
 .blog-post-content {
-    color: green;
+    color: black;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -113,7 +114,7 @@ html {
 .post-detail-header {
     height: 5rem;
     width: 100%;
-    background-color: red;
+    background-color: black;
 }
 
 .post-detail-content {
@@ -121,5 +122,5 @@ html {
 }
 
 .main-header {
-    background-color: red;
+    background-color: black;
 }
